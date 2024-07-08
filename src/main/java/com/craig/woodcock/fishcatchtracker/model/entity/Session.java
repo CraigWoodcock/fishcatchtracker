@@ -6,6 +6,8 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,8 +31,8 @@ public class Session {
     @OneToMany(mappedBy = "session")
     private Set<Catch> catches = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "session")
-    private Set<User> users = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "session")
+   private List<User> users;
 
     public Integer getId() {
         return id;
@@ -72,12 +74,11 @@ public class Session {
         this.catches = catches;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
-
 }

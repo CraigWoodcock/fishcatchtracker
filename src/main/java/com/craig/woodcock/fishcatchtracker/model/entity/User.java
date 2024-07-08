@@ -1,6 +1,9 @@
 package com.craig.woodcock.fishcatchtracker.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -15,12 +18,18 @@ public class User {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "username", nullable = false, length = 50)
+    @NotBlank(message = "Username is mandatory")
+    @Size(min = 4, max = 20, message = "Username must be between 4 and 20 characters")
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Email should be valid")
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
@@ -35,8 +44,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Catch> catches = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "user")
-    private Set<Session> sessions = new LinkedHashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "session_id")
+    private Session session;
 
     public Integer getId() {
         return id;
@@ -94,12 +104,11 @@ public class User {
         this.catches = catches;
     }
 
-    public Set<Session> getSessions() {
-        return sessions;
+    public Session getSession() {
+        return session;
     }
 
-    public void setSessions(Set<Session> sessions) {
-        this.sessions = sessions;
+    public void setSession(Session session) {
+        this.session = session;
     }
-
 }
