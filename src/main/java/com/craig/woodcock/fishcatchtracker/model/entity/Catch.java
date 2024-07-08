@@ -1,9 +1,7 @@
 package com.craig.woodcock.fishcatchtracker.model.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 
-import java.time.Instant;
 import java.time.LocalTime;
 
 @Entity
@@ -37,10 +35,6 @@ public class Catch {
 
     @Column(name = "photo_url")
     private String photoUrl;
-
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
-    private Instant createdAt;
 
     public Integer getId() {
         return id;
@@ -106,26 +100,4 @@ public class Catch {
         this.photoUrl = photoUrl;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Catch{" +
-                "id=" + id +
-                ", session=" + session +
-                ", user=" + user +
-                ", time=" + time +
-                ", lake='" + lake + '\'' +
-                ", pegNo=" + pegNo +
-                ", notes='" + notes + '\'' +
-                ", photoUrl='" + photoUrl + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
-    }
 }
