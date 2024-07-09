@@ -4,6 +4,7 @@ import com.craig.woodcock.fishcatchtracker.model.entity.User;
 import com.craig.woodcock.fishcatchtracker.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
     public List<User> findAllUsers(){
 
         return userRepository.findAll();
@@ -19,9 +22,9 @@ public class UserService {
 
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean registerUser(User user) {
@@ -29,7 +32,7 @@ public class UserService {
                 userRepository.findByEmail(user.getEmail()).isPresent()) {
             return false;
         }
-        user.setPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }

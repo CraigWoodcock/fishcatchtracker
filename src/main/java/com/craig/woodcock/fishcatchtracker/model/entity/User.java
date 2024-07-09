@@ -33,7 +33,7 @@ public class User {
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @ColumnDefault("0")
+    @ColumnDefault("false")
     @Column(name = "is_admin")
     private Boolean isAdmin;
 

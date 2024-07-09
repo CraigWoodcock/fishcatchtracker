@@ -23,11 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-//    ## this method will only work with @RestController annotation
-//@GetMapping("/users")
-//public List<User> getUsers() {
-//        return userService.findAllUsers();
-//}
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
