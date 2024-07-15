@@ -9,29 +9,15 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class UserSessionId implements Serializable {
-    private static final long serialVersionUID = -9222153979873663860L;
-
-    @NotNull
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-
+public class SessionAnglerId implements Serializable {
+    private static final long serialVersionUID = 3436254981269058709L;
     @NotNull
     @Column(name = "session_id", nullable = false)
     private Integer sessionId;
 
     @NotNull
     @Column(name = "angler_id", nullable = false)
-    private Integer anglerId;  // Added anglerId to the composite key
-
-    // Getters and Setters
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+    private Integer anglerId;
 
     public Integer getSessionId() {
         return sessionId;
@@ -53,14 +39,14 @@ public class UserSessionId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        UserSessionId entity = (UserSessionId) o;
+        SessionAnglerId entity = (SessionAnglerId) o;
         return Objects.equals(this.sessionId, entity.sessionId) &&
-                Objects.equals(this.userId, entity.userId) &&
-                Objects.equals(this.anglerId, entity.anglerId); // Added anglerId to equals method
+                Objects.equals(this.anglerId, entity.anglerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionId, userId, anglerId); // Added anglerId to hashCode method
+        return Objects.hash(sessionId, anglerId);
     }
+
 }

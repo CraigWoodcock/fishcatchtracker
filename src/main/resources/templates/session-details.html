@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Session Details</title>
+</head>
+<body>
+<h1>Your Sessions</h1>
+
+<!-- Form to add a new session -->
+<form th:action="@{/sessions/add}" method="post">
+    <div>
+        <label for="venue">New Session Venue:</label>
+        <input type="text" id="venue" name="venue" required>
+    </div>
+    <div>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date"  required>
+    </div>
+    <!-- Input field for a comma-separated list of anglers' names -->
+    <div>
+        <label for="anglers">Anglers (comma-separated):</label>
+        <input type="text" id="anglers" name="anglers" required>
+    </div>
+    <div>
+        <button type="submit">Add Session</button>
+    </div>
+</form>
+
+<!-- Display existing sessions -->
+<h2>Existing Sessions</h2>
+<ul>
+    <li th:each="sess : ${sessions}">
+        <span th:text="${sess.venue} + ' - ' + ${sess.date}"></span>
+
+        <form th:action="@{/sessions/delete/{id}(id=${sess.id})}" method="post" style="display:inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+
+</body>
+</html>

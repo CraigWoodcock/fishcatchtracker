@@ -1,31 +1,40 @@
 package com.craig.woodcock.fishcatchtracker.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.ColumnDefault;
 
+import java.time.Instant;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "catches")
 public class Catch {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "angler_id", nullable = false)
+    private Angler angler;
 
+    @NotNull
     @Column(name = "time", nullable = false)
     private LocalTime time;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "lake", nullable = false, length = 100)
     private String lake;
 
+    @NotNull
     @Column(name = "peg_no", nullable = false)
     private Integer pegNo;
 
@@ -33,8 +42,13 @@ public class Catch {
     @Column(name = "notes")
     private String notes;
 
+    @Size(max = 255)
     @Column(name = "photo_url")
     private String photoUrl;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
+    private Instant createdAt;
 
     public Integer getId() {
         return id;
@@ -52,12 +66,12 @@ public class Catch {
         this.session = session;
     }
 
-    public User getUser() {
-        return user;
+    public Angler getAngler() {
+        return angler;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAngler(Angler angler) {
+        this.angler = angler;
     }
 
     public LocalTime getTime() {
@@ -98,6 +112,14 @@ public class Catch {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
 }

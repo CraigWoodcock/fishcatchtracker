@@ -1,52 +1,42 @@
 package com.craig.woodcock.fishcatchtracker.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "Username is mandatory")
-    @Size(min = 4, max = 20, message = "Username must be between 4 and 20 characters")
-    @Column(name = "username", nullable = false, unique = true)
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "username", nullable = false, length = 50)
     private String username;
 
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 6, message = "Password must be at least 6 characters")
+    @Size(max = 100)
+    @NotNull
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @NotBlank(message = "Email is mandatory")
-    @Email(message = "Email should be valid")
+    @Size(max = 100)
+    @NotNull
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @ColumnDefault("false")
+    @ColumnDefault("0")
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
     private Instant createdAt;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Catch> catches = new LinkedHashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "session_id")
-    private Session session;
 
     public Integer getId() {
         return id;
@@ -96,19 +86,4 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public Set<Catch> getCatches() {
-        return catches;
-    }
-
-    public void setCatches(Set<Catch> catches) {
-        this.catches = catches;
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
-    }
 }

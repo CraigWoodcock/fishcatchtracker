@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -28,12 +29,16 @@ public class UserService {
     }
 
     public boolean registerUser(User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent() ||
-                userRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             return false;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
+    }
+
+    public User findByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return userOptional.orElse(null);
     }
 }

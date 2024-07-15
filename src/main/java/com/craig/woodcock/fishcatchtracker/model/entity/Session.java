@@ -1,39 +1,35 @@
 package com.craig.woodcock.fishcatchtracker.model.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-
-import java.time.Instant;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "sessions")
 public class Session {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "venue", nullable = false, length = 100)
     private String venue;
+    private LocalDate date;
+    private Timestamp createdAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
-    private Instant createdAt;
+    @ManyToMany
+    @JoinTable(
+            name = "session_anglers",
+            joinColumns = @JoinColumn(name = "session_id"),
+            inverseJoinColumns = @JoinColumn(name = "angler_id")
+    )
+    private Set<Angler> anglers;
 
-    @OneToMany(mappedBy = "session")
-    private Set<Catch> catches = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "session")
-   private List<User> users;
-
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -42,12 +38,12 @@ public class Session {
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public User getUser() {
+        return user;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getVenue() {
@@ -58,27 +54,27 @@ public class Session {
         this.venue = venue;
     }
 
-    public Instant getCreatedAt() {
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Set<Catch> getCatches() {
-        return catches;
+    public Set<Angler> getAnglers() {
+        return anglers;
     }
 
-    public void setCatches(Set<Catch> catches) {
-        this.catches = catches;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setAnglers(Set<Angler> anglers) {
+        this.anglers = anglers;
     }
 }
