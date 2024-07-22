@@ -24,10 +24,7 @@ public class SecurityConfig {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return customUserDetailsService;
-    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,7 +50,9 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
+                        .loginProcessingUrl("/perform_login")
                         .defaultSuccessUrl("/sessions", true)
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout

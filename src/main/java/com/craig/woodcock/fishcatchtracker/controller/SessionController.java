@@ -84,7 +84,7 @@ public class SessionController {
         Session session = sessionService.getSessionById(id);
         logger.info("Fetched session: " + session);
 
-        if (session != null && session.getUser().equals(user)) {
+        if (session != null ){
             sessionService.deleteSession(id);
             logger.info("Deleted session ID: " + id);
         } else {

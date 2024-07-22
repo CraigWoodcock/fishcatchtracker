@@ -24,7 +24,7 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         // Implement your authorities logic
-        return null;
+        return super.getAuthorities();
     }
 
     @Override
